@@ -1,566 +1,303 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rajasthan Pokémon Atlas - 50 Districts Pokedex</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts: Inter & Outfit -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        display: ['Outfit', 'sans-serif'],
-                    },
-                    colors: {
-                        rajasthan: {
-                            sand: '#fdfbf7',
-                            sanddark: '#f4ebd0',
-                            terracotta: '#b84a26',
-                            terracottadark: '#94371a',
-                            indigo: '#1e293b',
-                            gold: '#d97706',
-                            goldlight: '#fef3c7',
-                            pinkcity: '#e11d48'
-                        },
-                        poke: {
-                            normal: '#A8A878',
-                            fire: '#F08030',
-                            water: '#6890F0',
-                            electric: '#F8D030',
-                            grass: '#78C850',
-                            ice: '#98D8D8',
-                            fighting: '#C03028',
-                            poison: '#A040A0',
-                            ground: '#E0C068',
-                            flying: '#A890F0',
-                            psychic: '#F85888',
-                            bug: '#A8B820',
-                            rock: '#B8A038',
-                            ghost: '#705898',
-                            dragon: '#7038F8',
-                            dark: '#705848',
-                            steel: '#B8B8D0',
-                            fairy: '#EE99AC'
-                        }
-                    }
-                }
-            }
-        }
-    </script>
+    <title>Rajasthan Pokémon Atlas - 50 Districts & Counterparts</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body {
-            background-color: #fcf9f2;
-            background-image: radial-gradient(#e5d8b5 0.75px, transparent 0.75px), radial-gradient(#e5d8b5 0.75px, #fcf9f2 0.75px);
-            background-size: 30px 30px;
-            background-position: 0 0, 15px 15px;
-        }
+        body { font-family: 'Poppins', sans-serif; }
         .glass-card {
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(217, 119, 6, 0.2);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
         }
-        .glass-modal {
-            background: rgba(255, 255, 255, 0.96);
-            backdrop-filter: blur(16px);
+        .pokemon-img {
+            transition: transform 0.3s ease;
         }
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #f1ebd8;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #c85a32;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #94371a;
+        .district-card:hover .pokemon-img {
+            transform: scale(1.15) translateY(-5px);
         }
     </style>
 </head>
-<body class="min-h-full flex flex-col text-rajasthan-indigo antialiased">
+<body class="bg-gradient-to-br from-amber-50 via-orange-50 to-red-100 min-h-screen text-slate-800">
 
-    <header class="bg-gradient-to-r from-rajasthan-indigo via-slate-900 to-rajasthan-terracottadark text-white shadow-xl sticky top-0 z-40 border-b-4 border-rajasthan-gold">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col md:flex-row justify-between items-center gap-4">
-            <div class="flex items-center space-x-3">
-                <div class="w-12 h-12 rounded-full bg-rajasthan-gold flex items-center justify-center shadow-lg border-2 border-white animate-pulse">
-                    <i class="fa-solid fa-compass text-rajasthan-indigo text-2xl"></i>
-                </div>
-                <div>
-                    <h1 class="font-display text-2xl md:text-3xl font-extrabold tracking-wide bg-gradient-to-r from-amber-200 via-white to-amber-100 bg-clip-text text-transparent">
-                        Rajasthan Pokémon Atlas
-                    </h1>
-                    <p class="text-xs md:text-sm text-amber-200 font-medium">Exploring all 50 Districts & Their Official Pokémon Counterparts</p>
-                </div>
-            </div>
-
-            <!-- Live Counter & Stats Badge -->
-            <div class="flex items-center gap-3 bg-white/10 px-4 py-2 rounded-full border border-amber-400/30 backdrop-blur-md">
-                <div class="flex items-center space-x-2">
-                    <span class="w-3 h-3 rounded-full bg-green-400 animate-ping"></span>
-                    <span class="text-sm font-semibold text-amber-100">Mapped Districts:</span>
-                </div>
-                <span id="district-counter" class="bg-rajasthan-gold text-rajasthan-indigo font-bold px-3 py-0.5 rounded-full text-sm">50 / 50</span>
-            </div>
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-amber-700 via-orange-600 to-red-700 text-white shadow-xl py-8 px-4 mb-8 text-center relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
+        <div class="max-w-5xl mx-auto relative z-10">
+            <span class="bg-amber-500/30 text-amber-100 text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full border border-amber-300/30">Royal Edition</span>
+            <h1 class="text-4xl md:text-5xl font-extrabold mt-3 tracking-tight">Rajasthan Pokémon Atlas</h1>
+            <p class="text-amber-100 mt-2 text-sm md:text-base max-w-2xl mx-auto">Exploring Rajasthan's rich culture, geography, and heritage paired with official Pokémon counterparts across all districts.</p>
         </div>
     </header>
 
-    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <!-- Hero intro banner -->
-        <div class="glass-card rounded-2xl p-6 md:p-8 mb-8 shadow-xl border-t-4 border-rajasthan-terracotta relative overflow-hidden">
-            <div class="absolute -right-10 -bottom-10 opacity-10 pointer-events-none">
-                <i class="fa-solid fa-monument text-9xl text-rajasthan-terracotta"></i>
-            </div>
-            <div class="max-w-3xl">
-                <span class="inline-block px-3 py-1 bg-amber-100 text-rajasthan-terracotta font-bold text-xs uppercase tracking-wider rounded-full mb-3 border border-amber-300">
-                    Cultural & Regional Crossover
-                </span>
-                <h2 class="font-display text-2xl md:text-4xl font-bold text-slate-900 mb-3">
-                    The Land of Maharajas Meets the Pokémon Universe
-                </h2>
-                <p class="text-slate-600 text-sm md:text-base leading-relaxed">
-                    From the golden dunes of Jaisalmer to the azure lakes of Udaipur and the royal palaces of Jaipur—discover how all 50 districts of Rajasthan pair with official Pokémon counterparts complete with artwork, lore, and heritage highlights.
-                </p>
-            </div>
-        </div>
-
-        <div class="flex flex-col lg:flex-row gap-4 mb-8">
-            <!-- Search Box -->
-            <div class="relative flex-grow">
-                <span class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-slate-400">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                </span>
-                <input type="text" id="search-input" placeholder="Search by district name, Pokémon, or division..." 
-                    class="w-full pl-11 pr-4 py-3.5 bg-white rounded-xl border border-slate-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-rajasthan-terracotta focus:border-transparent text-slate-800 placeholder-slate-400 font-medium transition">
+    <!-- Main Container -->
+    <main class="max-w-7xl mx-auto px-4 pb-16">
+        
+        <!-- Search & Filters Toolbar -->
+        <div class="bg-white/80 backdrop-blur-md rounded-2xl shadow-md p-4 md:p-6 mb-8 border border-orange-200/50 flex flex-col md:flex-row gap-4 items-center justify-between">
+            <!-- Search Bar -->
+            <div class="w-full md:w-1/3 relative">
+                <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400">🔍</span>
+                <input type="text" id="searchInput" placeholder="Search district or Pokémon..." 
+                    class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm">
             </div>
 
-            <!-- Type Filter Dropdown -->
-            <div class="w-full lg:w-64">
-                <select id="type-filter" class="w-full px-4 py-3.5 bg-white rounded-xl border border-slate-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-rajasthan-terracotta focus:border-transparent text-slate-800 font-medium cursor-pointer transition">
-                    <option value="all">All Pokémon Types</option>
-                    <option value="Normal">Normal</option>
+            <!-- Filters -->
+            <div class="w-full md:w-auto flex flex-wrap gap-3 items-center justify-end">
+                <select id="divisionFilter" class="bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500">
+                    <option value="">All Divisions</option>
+                    <option value="Jaipur Division">Jaipur Division</option>
+                    <option value="Jodhpur Division">Jodhpur Division</option>
+                    <option value="Udaipur Division">Udaipur Division</option>
+                    <option value="Bikaner Division">Bikaner Division</option>
+                    <option value="Ajmer Division">Ajmer Division</option>
+                    <option value="Kota Division">Kota Division</option>
+                    <option value="Bharatpur Division">Bharatpur Division</option>
+                </select>
+
+                <select id="typeFilter" class="bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500">
+                    <option value="">All Types</option>
                     <option value="Fire">Fire</option>
                     <option value="Water">Water</option>
-                    <option value="Electric">Electric</option>
                     <option value="Grass">Grass</option>
-                    <option value="Ice">Ice</option>
-                    <option value="Fighting">Fighting</option>
-                    <option value="Poison">Poison</option>
-                    <option value="Ground">Ground</option>
-                    <option value="Flying">Flying</option>
                     <option value="Psychic">Psychic</option>
-                    <option value="Bug">Bug</option>
+                    <option value="Fighting">Fighting</option>
+                    <option value="Ground">Ground</option>
                     <option value="Rock">Rock</option>
-                    <option value="Ghost">Ghost</option>
-                    <option value="Dragon">Dragon</option>
-                    <option value="Dark">Dark</option>
                     <option value="Steel">Steel</option>
-                    <option value="Fairy">Fairy</option>
+                    <option value="Ghost">Ghost</option>
+                    <option value="Flying">Flying</option>
+                    <option value="Normal">Normal</option>
                 </select>
+
+                <span id="resultCount" class="text-xs font-semibold text-slate-500 bg-orange-100 px-3 py-2 rounded-xl">Showing 46 Districts</span>
             </div>
         </div>
 
-        <!-- Division Filter Pills -->
-        <div class="flex items-center gap-2 overflow-x-auto pb-4 mb-8 no-scrollbar" id="division-filters">
-            <button data-division="all" class="division-btn px-5 py-2.5 rounded-full font-semibold text-sm whitespace-nowrap transition shadow-sm bg-rajasthan-terracotta text-white shadow-rajasthan-terracotta/30">
-                <i class="fa-solid fa-globe mr-2"></i>All Divisions (50)
-            </button>
-            <button data-division="Jaipur" class="division-btn px-5 py-2.5 rounded-full font-semibold text-sm whitespace-nowrap transition shadow-sm bg-white text-slate-700 hover:bg-amber-50 border border-slate-200">
-                Jaipur (11)
-            </button>
-            <button data-division="Jodhpur" class="division-btn px-5 py-2.5 rounded-full font-semibold text-sm whitespace-nowrap transition shadow-sm bg-white text-slate-700 hover:bg-amber-50 border border-slate-200">
-                Jodhpur (8)
-            </button>
-            <button data-division="Udaipur" class="division-btn px-5 py-2.5 rounded-full font-semibold text-sm whitespace-nowrap transition shadow-sm bg-white text-slate-700 hover:bg-amber-50 border border-slate-200">
-                Udaipur (7)
-            </button>
-            <button data-division="Bikaner" class="division-btn px-5 py-2.5 rounded-full font-semibold text-sm whitespace-nowrap transition shadow-sm bg-white text-slate-700 hover:bg-amber-50 border border-slate-200">
-                Bikaner (5)
-            </button>
-            <button data-division="Ajmer" class="division-btn px-5 py-2.5 rounded-full font-semibold text-sm whitespace-nowrap transition shadow-sm bg-white text-slate-700 hover:bg-amber-50 border border-slate-200">
-                Ajmer (8)
-            </button>
-            <button data-division="Kota" class="division-btn px-5 py-2.5 rounded-full font-semibold text-sm whitespace-nowrap transition shadow-sm bg-white text-slate-700 hover:bg-amber-50 border border-slate-200">
-                Kota (4)
-            </button>
-            <button data-division="Bharatpur" class="division-btn px-5 py-2.5 rounded-full font-semibold text-sm whitespace-nowrap transition shadow-sm bg-white text-slate-700 hover:bg-amber-50 border border-slate-200">
-                Bharatpur (7)
-            </button>
+        <!-- Districts Grid -->
+        <div id="districtGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <!-- Cards injected via JS -->
         </div>
 
-        <div id="district-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            <!-- Dynamic Cards inserted via JavaScript -->
+        <!-- Empty State -->
+        <div id="emptyState" class="hidden text-center py-16">
+            <p class="text-2xl text-slate-400 font-medium">No districts found matching your criteria.</p>
         </div>
 
-        <!-- Empty State Container -->
-        <div id="empty-state" class="hidden text-center py-20">
-            <div class="w-20 h-20 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4 text-rajasthan-terracotta text-3xl">
-                <i class="fa-solid fa-triangle-exclamation"></i>
-            </div>
-            <h3 class="font-display text-xl font-bold text-slate-800 mb-2">No matching districts found</h3>
-            <p class="text-slate-500 text-sm">Try searching with a different keyword or adjusting your filters.</p>
-        </div>
     </main>
 
-    <div id="district-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300">
-        <div id="modal-content" class="glass-modal w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden transform scale-95 transition-transform duration-300 border border-amber-200">
-            <!-- Modal Header banner -->
-            <div id="modal-header-bg" class="bg-gradient-to-r from-rajasthan-indigo to-slate-800 p-6 text-white relative">
-                <button onclick="closeModal()" class="absolute top-4 right-4 w-10 h-10 rounded-full bg-black/20 hover:bg-black/40 flex items-center justify-center text-white transition">
-                    <i class="fa-solid fa-xmark text-lg"></i>
-                </button>
-                <div class="flex items-center gap-4">
-                    <div class="w-20 h-20 rounded-2xl bg-white/10 flex items-center justify-center p-2 border border-white/20 shadow-inner overflow-hidden">
-                        <img id="modal-poke-img" src="" alt="Pokémon Artwork" class="w-full h-full object-contain filter drop-shadow-md">
-                    </div>
-                    <div>
-                        <div class="flex items-center gap-2 mb-1">
-                            <span id="modal-division-badge" class="px-2.5 py-0.5 rounded-full text-xs font-bold uppercase bg-rajasthan-gold text-rajasthan-indigo">Division</span>
-                            <span id="modal-id-badge" class="text-xs text-amber-200 font-mono">#00</span>
-                        </div>
-                        <h2 id="modal-district-name" class="font-display text-2xl md:text-3xl font-extrabold">District Name</h2>
-                    </div>
+    <!-- Detail Modal -->
+    <div id="detailModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 md:p-8 shadow-2xl relative transform transition-all scale-95 opacity-0" id="modalContentBox">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 bg-slate-100 hover:bg-slate-200 w-9 h-9 rounded-full flex items-center justify-center font-bold transition">✕</button>
+            
+            <div class="flex items-center gap-4 mb-6">
+                <div class="w-24 h-24 bg-orange-50 rounded-2xl flex items-center justify-center border border-orange-100 shadow-inner">
+                    <img id="modalImg" src="" alt="Pokémon" class="w-20 h-20 object-contain">
+                </div>
+                <div>
+                    <span id="modalDivision" class="text-xs font-bold text-orange-600 uppercase tracking-widest bg-orange-100 px-2.5 py-1 rounded-full"></span>
+                    <h2 id="modalDistrict" class="text-2xl font-bold text-slate-800 mt-2"></h2>
+                    <p id="modalPokemon" class="text-sm font-semibold text-slate-600"></p>
                 </div>
             </div>
 
-            <!-- Modal Body -->
-            <div class="p-6 md:p-8 space-y-6 max-h-[70vh] overflow-y-auto">
-                <!-- Pokémon pairing section -->
-                <div class="bg-amber-50/70 border border-amber-200/60 rounded-2xl p-5">
-                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-3">
-                        <div>
-                            <span class="text-xs font-bold text-rajasthan-terracotta uppercase tracking-wider">Assigned Pokémon Partner</span>
-                            <h3 id="modal-pokemon-name" class="font-display text-xl font-bold text-slate-900">Pokémon Name</h3>
-                        </div>
-                        <div id="modal-type-badges" class="flex gap-2">
-                            <!-- Type badges inserted here -->
-                        </div>
-                    </div>
-                    <p id="modal-lore" class="text-slate-700 text-sm md:text-base leading-relaxed">
-                        Lore description goes here...
-                    </p>
-                </div>
-
-                <!-- Cultural & Geographical Highlights -->
+            <div class="space-y-4">
                 <div>
-                    <h4 class="font-display font-bold text-slate-900 text-base mb-3 flex items-center gap-2">
-                        <i class="fa-solid fa-landmark text-rajasthan-terracotta"></i> Regional Significance & Heritage
-                    </h4>
-                    <div id="modal-highlights" class="bg-white rounded-xl p-4 border border-slate-200 text-slate-600 text-sm leading-relaxed">
-                        Highlights info...
-                    </div>
+                    <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Type</h4>
+                    <span id="modalTypeBadge" class="inline-block px-3 py-1 rounded-full text-xs font-bold text-white"></span>
                 </div>
-
-                <!-- Simulated Stats -->
                 <div>
-                    <h4 class="font-display font-bold text-slate-900 text-base mb-3 flex items-center gap-2">
-                        <i class="fa-solid fa-chart-bar text-rajasthan-gold"></i> Regional Synergy Power Stats
-                    </h4>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="modal-stats">
-                        <!-- Stat bars -->
-                    </div>
+                    <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Cultural & Geographic Synergy</h4>
+                    <p id="modalDesc" class="text-sm text-slate-600 leading-relaxed"></p>
                 </div>
             </div>
 
-            <!-- Modal Footer -->
-            <div class="bg-slate-50 px-6 py-4 border-t border-slate-200 flex justify-end">
-                <button onclick="closeModal()" class="px-6 py-2.5 bg-rajasthan-terracotta hover:bg-rajasthan-terracottadark text-white font-semibold rounded-xl shadow-md transition">
-                    Close Atlas Entry
-                </button>
+            <div class="mt-8 pt-4 border-t border-slate-100 flex justify-end">
+                <button onclick="closeModal()" class="bg-slate-800 hover:bg-slate-900 text-white px-5 py-2.5 rounded-xl text-sm font-medium transition">Close</button>
             </div>
         </div>
     </div>
 
-    <footer class="bg-rajasthan-indigo text-amber-100 py-8 border-t border-amber-900/30 mt-auto">
-        <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
-            <p class="font-display font-bold text-base text-white">Rajasthan Pokémon Atlas • 50 Districts Edition</p>
-            <p class="text-xs text-amber-200/70">A creative fusion of Rajasthani administrative geography and official Pokémon artwork.</p>
-        </div>
-    </footer>
-
+    <!-- JavaScript Data & Logic -->
     <script>
-        // Complete Dataset of all 50 Districts of Rajasthan with official PokeAPI IDs
-        const officialDistricts = [
-            // Jaipur Division (11)
-            { id: 1, name: "Jaipur", division: "Jaipur", pokemon: "Gallade", pokeId: 475, types: ["Psychic", "Fighting"], lore: "The royal 'Pink City' matches Gallade's knightly, elegant, and noble pink aesthetic.", highlights: "Famous for Hawa Mahal, Amer Fort, City Palace, and rich Rajputana heritage." },
-            { id: 2, name: "Alwar", division: "Jaipur", pokemon: "Arcanine", pokeId: 59, types: ["Fire"], lore: "Home to the famous Sariska Tiger Reserve, making a fire-type tiger companion a natural fit.", highlights: "Sariska Tiger Reserve, Alwar Fort (Bala Quila), and delicious Alwar Kalakand." },
-            { id: 3, name: "Dausa", division: "Jaipur", pokemon: "Cubone", pokeId: 104, types: ["Ground"], lore: "Known for its rugged ancient hills and architectural history like the Abhaneri stepwell.", highlights: "Chand Baori stepwell in Abhaneri, Mehandipur Balaji Temple, and rugged hills." },
-            { id: 4, name: "Jhunjhunu", division: "Jaipur", pokemon: "Bronzong", pokeId: 437, types: ["Steel", "Psychic"], lore: "Famous for its historic Shekhawati havelis and rich copper-mining heritage.", highlights: "Shekhawati painted havelis, Khetri copper mines, and vibrant fresco art." },
-            { id: 5, name: "Sikar", division: "Jaipur", pokemon: "Shiftry", pokeId: 275, types: ["Grass", "Dark"], lore: "Surrounded by semi-arid hills and vibrant desert folklore.", highlights: "Khatu Shyamji Temple, Harshnath Temple hills, and historic merchant havelis." },
-            { id: 6, name: "Khairthal-Tijara", division: "Jaipur", pokemon: "Bunnelby", pokeId: 659, types: ["Normal"], lore: "A rapidly growing agricultural and industrial hub near the national capital region.", highlights: "Tijara Jain Temple, rapid industrialization, and fertile agrarian plains." },
-            { id: 7, name: "Kotputli-Behror", division: "Jaipur", pokemon: "Machop", pokeId: 66, types: ["Fighting"], lore: "A bustling industrial corridor filled with hardworking craftsmanship.", highlights: "Industrial manufacturing hub, educational coaching centers, and highway trade." },
-            { id: 8, name: "Dudu", division: "Jaipur", pokemon: "Sudowoodo", pokeId: 185, types: ["Rock"], lore: "A quirky, standalone landscape symbol of unique rural administrative setups.", highlights: "Historic Maujmahabad, traditional rural crafts, and serene desert landscapes." },
-            { id: 47, name: "Neem Ka Thana", division: "Jaipur", pokemon: "Lucario", pokeId: 448, types: ["Fighting", "Steel"], lore: "Famed for historical copper deposits, forts, and rugged mineral-rich hills.", highlights: "Patan Fort, ancient copper smelting history, and hilly terrain." },
-            { id: 48, name: "Behror", division: "Jaipur", pokemon: "Machop", pokeId: 66, types: ["Fighting"], lore: "A thriving industrial and educational hub in northern Rajasthan.", highlights: "Industrial parks, educational institutions, and Delhi-Jaipur highway connectivity." },
-            { id: 49, name: "Khetri", division: "Jaipur", pokemon: "Bronzor", pokeId: 436, types: ["Steel", "Psychic"], lore: "Historic mining town renowned for copper reserves and heritage forts.", highlights: "Khetri Wind Palace, copper mines, and Rajputana architecture." },
+        const districtsData = [
+            // Jaipur Division
+            { name: "Jaipur", division: "Jaipur Division", pokemon: "Gallade", type: "Psychic", dexId: 475, desc: "The royal 'Pink City' matches Gallade's knightly, elegant, and noble pink aesthetic." },
+            { name: "Alwar", division: "Jaipur Division", pokemon: "Arcanine", type: "Fire", dexId: 59, desc: "Home to the famous Sariska Tiger Reserve, making a fire-type tiger companion a natural fit." },
+            { name: "Dausa", division: "Jaipur Division", pokemon: "Cubone", type: "Ground", dexId: 104, desc: "Known for its rugged ancient hills and architectural history like the Abhaneri stepwell." },
+            { name: "Jhunjhunu", division: "Jaipur Division", pokemon: "Bronzong", type: "Steel", dexId: 437, desc: "Famous for its historic Shekhawati havelis and rich copper-mining heritage." },
+            { name: "Sikar", division: "Jaipur Division", pokemon: "Shiftry", type: "Grass", dexId: 275, desc: "Surrounded by semi-arid hills and vibrant desert folklore." },
+            { name: "Khairthal-Tijara", division: "Jaipur Division", pokemon: "Bunnelby", type: "Normal", dexId: 659, desc: "A rapidly growing agricultural and industrial hub near the national capital region." },
+            { name: "Kotputli-Behror", division: "Jaipur Division", pokemon: "Machop", type: "Fighting", dexId: 66, desc: "A bustling industrial corridor filled with hardworking craftsmanship." },
+            { name: "Dudu", division: "Jaipur Division", pokemon: "Sudowoodo", type: "Rock", dexId: 185, desc: "A quirky, standalone landscape symbol of unique rural administrative setups." },
 
-            // Jodhpur Division (8)
-            { id: 9, name: "Jaisalmer", division: "Jodhpur", pokemon: "Sandshrew", pokeId: 27, types: ["Ground"], lore: "The Golden City deep in the heart of the Thar Desert, surrounded by rolling sand dunes.", highlights: "Jaisalmer Sonar Qila (Golden Fort), Sam Sand Dunes, and intricate havelis." },
-            { id: 10, name: "Jodhpur", division: "Jodhpur", pokemon: "Greninja", pokeId: 658, types: ["Water", "Dark"], lore: "The iconic 'Blue City' with majestic blue houses and forts matches the swift ninja aesthetic.", highlights: "Mehrangarh Fort, Umaid Bhawan Palace, and blue-painted old city houses." },
-            { id: 11, name: "Barmer", division: "Jodhpur", pokemon: "Camerupt", pokeId: 323, types: ["Fire", "Ground"], lore: "A major desert terrain known for oil fields, folk culture, and high temperatures.", highlights: "Kiradu ancient temples, crude oil extraction fields, and rich Thar folk music." },
-            { id: 12, name: "Pali", division: "Jodhpur", pokemon: "Rhyhorn", pokeId: 111, types: ["Ground", "Rock"], lore: "Known for industrial textile production and rocky terrain.", highlights: "Jawai Leopard Reserve, Ranakpur Jain Temple, and textile printing." },
-            { id: 13, name: "Jalore", division: "Jodhpur", pokemon: "Golem", pokeId: 76, types: ["Rock", "Ground"], lore: "Famed for its massive granite quarries and rocky hills.", highlights: "Jalore Fort, granite stone processing industries, and Sundha Mata Temple." },
-            { id: 14, name: "Sirohi", division: "Jodhpur", pokemon: "Abomasnow", pokeId: 460, types: ["Grass", "Ice"], lore: "Home to Mount Abu, Rajasthan's only hill station with cooler climes.", highlights: "Mount Abu, Dilwara Jain Temples, Nakki Lake, and lush green hills." },
-            { id: 15, name: "Phalodi", division: "Jodhpur", pokemon: "Cramorant", pokeId: 845, types: ["Water", "Flying"], lore: "Famed for Khichan village, a global sanctuary for Demoiselle cranes.", highlights: "Khichan bird sanctuary hosting thousands of migratory cranes, salt pans." },
-            { id: 16, name: "Balotra", division: "Jodhpur", pokemon: "Magcargo", pokeId: 219, types: ["Fire", "Rock"], lore: "Known for textile dyeing, block printing, and hot desert winds.", highlights: "Pachpadra salt basin, vibrant textile dyeing clusters, and folklore." },
+            // Jodhpur Division
+            { name: "Jaisalmer", division: "Jodhpur Division", pokemon: "Sandshrew", type: "Ground", dexId: 27, desc: "The Golden City deep in the heart of the Thar Desert, surrounded by rolling sand dunes." },
+            { name: "Jodhpur", division: "Jodhpur Division", pokemon: "Greninja", type: "Water", dexId: 658, desc: "The iconic 'Blue City' with majestic blue houses and forts matches the swift ninja aesthetic." },
+            { name: "Barmer", division: "Jodhpur Division", pokemon: "Camerupt", type: "Fire", dexId: 323, desc: "A major desert terrain known for oil fields, folk culture, and high temperatures." },
+            { name: "Pali", division: "Jodhpur Division", pokemon: "Rhyhorn", type: "Rock", dexId: 111, desc: "Known for industrial textile production and rocky terrain." },
+            { name: "Jalore", division: "Jodhpur Division", pokemon: "Golem", type: "Rock", dexId: 76, desc: "Famed for its massive granite quarries and rocky hills." },
+            { name: "Sirohi", division: "Jodhpur Division", pokemon: "Abomasnow", type: "Grass", dexId: 460, desc: "Home to Mount Abu, Rajasthan's only hill station with cooler climes." },
+            { name: "Phalodi", division: "Jodhpur Division", pokemon: "Cramorant", type: "Flying", dexId: 845, desc: "Famed for Khichan village, a global sanctuary for Demoiselle cranes." },
+            { name: "Balotra", division: "Jodhpur Division", pokemon: "Magcargo", type: "Fire", dexId: 219, desc: "Known for textile dyeing, block printing, and hot desert winds." },
 
-            // Udaipur Division (7)
-            { id: 17, name: "Udaipur", division: "Udaipur", pokemon: "Milotic", pokeId: 350, types: ["Water"], lore: "The romantic 'City of Lakes' with stunning palaces calls for the most graceful water Pokémon.", highlights: "Lake Pichola, City Palace, Jag Mandir, and romantic lakefront architecture." },
-            { id: 18, name: "Chittorgarh", division: "Udaipur", pokemon: "Aegislash", pokeId: 681, types: ["Steel", "Ghost"], lore: "The land of legendary valor, supreme sacrifice, and the invincible Chittorgarh Fort.", highlights: "Chittorgarh Fort, Vijay Stambh (Tower of Victory), and tales of Rajput bravery." },
-            { id: 19, name: "Banswara", division: "Udaipur", pokemon: "Exeggutor", pokeId: 103, types: ["Grass", "Psychic"], lore: "Known as the 'City of Hundred Islands' with tropical greenery and teak forests.", highlights: "Mahi Dam islands, tribal culture, teak forests, and Tripura Sundari Temple." },
-            { id: 20, name: "Dungarpur", division: "Udaipur", pokemon: "Lotad", pokeId: 270, types: ["Water", "Grass"], lore: "A picturesque hilly district with rich tribal heritage and water bodies.", highlights: "Gai Bilad, Udai Bilas Palace, and rich Vagad cultural traditions." },
-            { id: 21, name: "Pratapgarh", division: "Udaipur", pokemon: "Scyther", pokeId: 123, types: ["Bug", "Flying"], lore: "Surrounded by dense forest terrain and the home of traditional Thewa art.", highlights: "Sitamata Wildlife Sanctuary and intricate gold-on-glass Thewa craft." },
-            { id: 22, name: "Rajsamand", division: "Udaipur", pokemon: "Bastiodon", pokeId: 411, types: ["Rock", "Steel"], lore: "Home to the mighty Kumbhalgarh Fort, featuring the second-longest continuous wall in the world.", highlights: "Kumbhalgarh Fort wall, Haldighati historical battlefield, and Rajsamand Lake." },
-            { id: 23, name: "Salumbar", division: "Udaipur", pokemon: "Trevenant", pokeId: 709, types: ["Ghost", "Grass"], lore: "A densely forested and hilly tract rich in natural flora.", highlights: "Dense forest cover, hilly Mewar terrain, and rich indigenous biodiversity." },
+            // Udaipur Division
+            { name: "Udaipur", division: "Udaipur Division", pokemon: "Milotic", type: "Water", dexId: 350, desc: "The romantic 'City of Lakes' with stunning palaces calls for the most graceful water Pokémon." },
+            { name: "Chittorgarh", division: "Udaipur Division", pokemon: "Aegislash", type: "Steel", dexId: 681, desc: "The land of legendary valor, supreme sacrifice, and the invincible Chittorgarh Fort." },
+            { name: "Banswara", division: "Udaipur Division", pokemon: "Exeggutor", type: "Grass", dexId: 103, desc: "Known as the 'City of Hundred Islands' with tropical greenery and teak forests." },
+            { name: "Dungarpur", division: "Udaipur Division", pokemon: "Lotad", type: "Water", dexId: 270, desc: "A picturesque hilly district with rich tribal heritage and water bodies." },
+            { name: "Pratapgarh", division: "Udaipur Division", pokemon: "Scyther", type: "Bug", dexId: 123, desc: "Surrounded by dense forest terrain and the home of traditional Thewa art." },
+            { name: "Rajsamand", division: "Udaipur Division", pokemon: "Bastiodon", type: "Rock", dexId: 411, desc: "Home to the mighty Kumbhalgarh Fort, featuring the second-longest continuous wall." },
+            { name: "Salumbar", division: "Udaipur Division", pokemon: "Trevenant", type: "Ghost", dexId: 709, desc: "A densely forested and hilly tract rich in natural flora." },
 
-            // Bikaner Division (5)
-            { id: 24, name: "Bikaner", division: "Bikaner", pokemon: "Hippopotas", pokeId: 449, types: ["Ground"], lore: "Home to the majestic Junagadh Fort and famous for its desert climate and camel breeding.", highlights: "Junagadh Fort, National Research Centre on Camel, and Bikaneri Bhujia." },
-            { id: 25, name: "Churu", division: "Bikaner", pokemon: "Darmanitan", pokeId: 555, types: ["Fire"], lore: "Noted for extreme weather shifts—blistering summers and freezing winters.", highlights: "Tal Chhapar Sanctuary (blackbuck habitat), magnificent havelis, and sand dunes." },
-            { id: 26, name: "Sri Ganganagar", division: "Bikaner", pokemon: "Tropius", pokeId: 357, types: ["Grass", "Flying"], lore: "The 'Food Bowl of Rajasthan,' transformed into a lush green agricultural belt by canals.", highlights: "Indira Gandhi Canal irrigation, citrus orchards, and massive wheat production." },
-            { id: 27, name: "Hanumangarh", division: "Bikaner", pokemon: "Unown", pokeId: 201, types: ["Psychic"], lore: "Home to Kalibangan, an ancient Indus Valley Civilization site filled with historical mysteries.", highlights: "Kalibangan archaeological site, Bhatner Fort, and ancient Saraswati riverbed." },
-            { id: 28, name: "Anupgarh", division: "Bikaner", pokemon: "Gastrodon", pokeId: 423, types: ["Water", "Ground"], lore: "A productive canal-irrigated border district blending desert and water elements.", highlights: "Indo-Pak border region, canal networks, and thriving border agriculture." },
+            // Bikaner Division
+            { name: "Bikaner", division: "Bikaner Division", pokemon: "Hippopotas", type: "Ground", dexId: 449, desc: "Home to the majestic Junagadh Fort and famous for its desert climate and camel heritage." },
+            { name: "Churu", division: "Bikaner Division", pokemon: "Darmanitan", type: "Fire", dexId: 555, desc: "Noted for extreme weather shifts—blistering summers and freezing winters." },
+            { name: "Sri Ganganagar", division: "Bikaner Division", pokemon: "Tropius", type: "Grass", dexId: 357, desc: "The 'Food Bowl of Rajasthan,' transformed into a lush green agricultural belt by canals." },
+            { name: "Hanumangarh", division: "Bikaner Division", pokemon: "Unown", type: "Psychic", dexId: 201, desc: "Home to Kalibangan, an ancient Indus Valley Civilization site filled with historical mysteries." },
+            { name: "Anupgarh", division: "Bikaner Division", pokemon: "Gastrodon", type: "Water", dexId: 423, desc: "A productive canal-irrigated border district blending desert and water elements." },
 
-            // Ajmer Division (8)
-            { id: 29, name: "Ajmer", division: "Ajmer", pokemon: "Xatu", pokeId: 178, types: ["Psychic", "Flying"], lore: "A historic spiritual crossroads housing the Dargah Sharif and Pushkar, deeply mystical and ancient.", highlights: "Ajmer Sharif Dargah, Brahma Temple in Pushkar, Ana Sagar Lake, and Taragarh Fort." },
-            { id: 30, name: "Nagaur", division: "Ajmer", pokemon: "Magnemite", pokeId: 81, types: ["Electric", "Steel"], lore: "Famous for metal craftsmanship, iron tools, and historical Sufi architecture.", highlights: "Nagaur Fort, annual cattle fair, metal smithing, and Kuchaman Fort." },
-            { id: 31, name: "Tonk", division: "Ajmer", pokemon: "Espeon", pokeId: 196, types: ["Psychic"], lore: "Known as the 'Lucknow of Rajasthan' with grand Nawabi architecture and literary history.", highlights: "Sunehri Kothi (Mansion of Gold), Arabic & Persian Research Institute, and Banas River." },
-            { id: 32, name: "Bhilwara", division: "Ajmer", pokemon: "Spinda", pokeId: 327, types: ["Normal"], lore: "The 'Textile City' renowned across the country for its massive spinning and weaving mills.", highlights: "Menal waterfalls, textile synthetic fabric manufacturing, and Badnore Fort." },
-            { id: 33, name: "Beawar", division: "Ajmer", pokemon: "Makuhita", pokeId: 296, types: ["Fighting"], lore: "A vibrant trading and industrial town born out of historical British-era cantonment roots.", highlights: "Shri Badri Nath Temple, mineral processing, and bustling commercial markets." },
-            { id: 34, name: "Didwana-Kuchaman", division: "Ajmer", pokemon: "Pyukumuku", pokeId: 771, types: ["Water"], lore: "Famous for its vast saltwater lakes and saline pans.", highlights: "Didwana saltwater lake, Kuchaman Fort, and salt production heritage." },
-            { id: 35, name: "Kekri", division: "Ajmer", pokemon: "Mienfoo", pokeId: 619, types: ["Fighting"], lore: "A developing agricultural and commercial hub with ancient roots.", highlights: "Local agrarian markets, historic temples, and growing infrastructure." },
-            { id: 36, name: "Shahpura", division: "Ajmer", pokemon: "Smeargle", pokeId: 235, types: ["Normal"], lore: "Famed for the unique Phad miniature scroll painting tradition originating from this region.", highlights: "Phad scroll painting artistry, historic Phad houses, and cultural heritage." },
+            // Ajmer Division
+            { name: "Ajmer", division: "Ajmer Division", pokemon: "Xatu", type: "Psychic", dexId: 178, desc: "A historic spiritual crossroads housing the Dargah Sharif and Pushkar, deeply mystical." },
+            { name: "Nagaur", division: "Ajmer Division", pokemon: "Magnemite", type: "Electric", dexId: 81, desc: "Famous for metal craftsmanship, iron tools, and historical Sufi architecture." },
+            { name: "Tonk", division: "Ajmer Division", pokemon: "Espeon", type: "Psychic", dexId: 196, desc: "Known as the 'Lucknow of Rajasthan' with grand Nawabi architecture and literary history." },
+            { name: "Bhilwara", division: "Ajmer Division", pokemon: "Spinda", type: "Normal", dexId: 327, desc: "The 'Textile City' renowned across the country for its massive spinning and weaving mills." },
+            { name: "Beawar", division: "Ajmer Division", pokemon: "Makuhita", type: "Fighting", dexId: 296, desc: "A vibrant trading and industrial town born out of historical British-era cantonment roots." },
+            { name: "Didwana-Kuchaman", division: "Ajmer Division", pokemon: "Pyukumuku", type: "Water", dexId: 771, desc: "Famous for its vast saltwater lakes and saline pans." },
+            { name: "Kekri", division: "Ajmer Division", pokemon: "Mienfoo", type: "Fighting", dexId: 619, desc: "A developing agricultural and commercial hub with ancient roots." },
+            { name: "Shahpura", division: "Ajmer Division", pokemon: "Smeargle", type: "Normal", dexId: 235, desc: "Famed for the unique Phad miniature scroll painting tradition originating from this region." },
 
-            // Kota Division (4)
-            { id: 37, name: "Kota", division: "Kota", pokemon: "Alakazam", pokeId: 65, types: ["Psychic"], lore: "Renowned nationwide as India's premier coaching and educational powerhouse for engineering and medical exams.", highlights: "Chambal River waterfront, Seven Wonders Park, Kota Doria sarees, and coaching hubs." },
-            { id: 38, name: "Bundi", division: "Kota", pokemon: "Chatot", pokeId: 441, types: ["Normal", "Flying"], lore: "Famed for its intricate stepwells, majestic palaces, and stunning artistic miniature wall paintings.", highlights: "Taragarh Fort, Rani Ji ki Baori stepwell, and Chitrashala palace murals." },
-            { id: 39, name: "Baran", division: "Kota", pokemon: "Zarude", pokeId: 893, types: ["Dark", "Grass"], lore: "Home to dense foliage, wildlife, and the ancient Bhandadev Temple ruins.", highlights: "Bhandadev Temple (Mini Khajuraho), dense forests, and Sitabari tribal fair." },
-            { id: 40, name: "Jhalawar", division: "Kota", pokemon: "Roselia", pokeId: 315, types: ["Grass", "Poison"], lore: "Known for its relatively damp climate, citrus orchards, and lush poppy fields.", highlights: "Gagron Fort (UNESCO water fort), orange (santra) orchards, and Buddhist caves." },
+            // Kota Division
+            { name: "Kota", division: "Kota Division", pokemon: "Alakazam", type: "Psychic", dexId: 65, desc: "Renowned nationwide as India's premier coaching and educational powerhouse." },
+            { name: "Bundi", division: "Kota Division", pokemon: "Chatot", type: "Normal", dexId: 441, desc: "Famed for its intricate stepwells, majestic palaces, and stunning artistic miniature wall paintings." },
+            { name: "Baran", division: "Kota Division", pokemon: "Zarude", type: "Grass", dexId: 893, desc: "Home to dense foliage, wildlife, and the ancient Bhandadev Temple ruins." },
+            { name: "Jhalawar", division: "Kota Division", pokemon: "Roselia", type: "Grass", dexId: 315, desc: "Known for its relatively damp climate, citrus orchards, and lush poppy fields." },
 
-            // Bharatpur Division (7)
-            { id: 41, name: "Sawai Madhopur", division: "Bharatpur", pokemon: "Raikou", pokeId: 243, types: ["Electric"], lore: "Home to the world-renowned Ranthambore National Park, famous for its majestic wild tigers.", highlights: "Ranthambore National Park, Ranthambore Fort, and wildlife safaris." },
-            { id: 42, name: "Bharatpur", division: "Bharatpur", pokemon: "Noctowl", pokeId: 164, types: ["Normal", "Flying"], lore: "Home to Keoladeo National Park, a UNESCO World Heritage site and paradise for migratory birds.", highlights: "Keoladeo Ghana National Park (bird sanctuary) and Lohagarh Fort." },
-            { id: 43, name: "Dholpur", division: "Bharatpur", pokemon: "Stonjourner", pokeId: 874, types: ["Rock"], lore: "Famous for its iconic red sandstone quarries used in monumental architecture across India.", highlights: "Red sandstone quarries, Chambal ravines, and Nihal Tower clock tower." },
-            { id: 44, name: "Karauli", division: "Bharatpur", pokemon: "Houndoom", pokeId: 229, types: ["Dark", "Fire"], lore: "Rugged ravines, rocky terrain, and the legendary Kaila Devi temple hills.", highlights: "Kaila Devi Temple, Madan Mohan Ji Temple, and rugged ravines of Chambal." },
-            { id: 45, name: "Deeg", division: "Bharatpur", pokemon: "Blastoise", pokeId: 9, types: ["Water"], lore: "Famed for its royal water palaces, complex fountains, and historic fortifications.", highlights: "Deeg Palace water fountains, ornamental gardens, and Deeg Fort." },
-            { id: 46, name: "Gangapur City", division: "Bharatpur", pokemon: "Audino", pokeId: 531, types: ["Normal"], lore: "A bustling regional agricultural and commercial trading hub.", highlights: "Commercial trade center, local handicraft markets, and transport hub." },
-            { id: 50, name: "Pushkar", division: "Ajmer", pokemon: "Xatu", pokeId: 178, types: ["Psychic", "Flying"], lore: "Sacred temple town famous for its holy lake and annual camel fair.", highlights: "Pushkar Lake, Brahma Temple, and the world-famous Pushkar Camel Fair." }
+            // Bharatpur Division
+            { name: "Sawai Madhopur", division: "Bharatpur Division", pokemon: "Raikou", type: "Electric", dexId: 243, desc: "Home to the world-renowned Ranthambore National Park, famous for its majestic wild tigers." },
+            { name: "Bharatpur", division: "Bharatpur Division", pokemon: "Noctowl", type: "Normal", dexId: 163, desc: "Home to Keoladeo National Park, a UNESCO World Heritage site and paradise for migratory birds." },
+            { name: "Dholpur", division: "Bharatpur Division", pokemon: "Stonjourner", type: "Rock", dexId: 874, desc: "Famous for its iconic red sandstone quarries used in monumental architecture across India." },
+            { name: "Karauli", division: "Bharatpur Division", pokemon: "Houndoom", type: "Dark", dexId: 229, desc: "Rugged ravines, rocky terrain, and the legendary Kaila Devi temple hills." },
+            { name: "Deeg", division: "Bharatpur Division", pokemon: "Blastoise", type: "Water", dexId: 9, desc: "Famed for its royal water palaces, complex fountains, and historic fortifications." },
+            { name: "Gangapur City", division: "Bharatpur Division", pokemon: "Audino", type: "Normal", dexId: 531, desc: "A bustling regional agricultural and commercial trading hub." }
         ];
 
-        // Type badge color mapping helper
         const typeColors = {
-            Normal: 'bg-poke-normal text-white',
-            Fire: 'bg-poke-fire text-white',
-            Water: 'bg-poke-water text-white',
-            Electric: 'bg-poke-electric text-slate-900',
-            Grass: 'bg-poke-grass text-white',
-            Ice: 'bg-poke-ice text-slate-900',
-            Fighting: 'bg-poke-fighting text-white',
-            Poison: 'bg-poke-poison text-white',
-            Ground: 'bg-poke-ground text-slate-900',
-            Flying: 'bg-poke-flying text-white',
-            Psychic: 'bg-poke-psychic text-white',
-            Bug: 'bg-poke-bug text-white',
-            Rock: 'bg-poke-rock text-white',
-            Ghost: 'bg-poke-ghost text-white',
-            Dragon: 'bg-poke-dragon text-white',
-            Dark: 'bg-poke-dark text-white',
-            Steel: 'bg-poke-steel text-slate-900',
-            Fairy: 'bg-poke-fairy text-slate-900'
+            Fire: 'bg-red-500', Water: 'bg-blue-500', Grass: 'bg-green-500', 
+            Psychic: 'bg-purple-500', Fighting: 'bg-amber-700', Ground: 'bg-yellow-600', 
+            Rock: 'bg-stone-500', Steel: 'bg-slate-500', Ghost: 'bg-indigo-600', 
+            Flying: 'bg-sky-400', Normal: 'bg-zinc-400', Bug: 'bg-lime-600', Electric: 'bg-amber-400', Dark: 'bg-neutral-800'
         };
 
-        let currentDivision = 'all';
-        let currentType = 'all';
-        let searchQuery = '';
+        const grid = document.getElementById('districtGrid');
+        const searchInput = document.getElementById('searchInput');
+        const divisionFilter = document.getElementById('divisionFilter');
+        const typeFilter = document.getElementById('typeFilter');
+        const resultCount = document.getElementById('resultCount');
+        const emptyState = document.getElementById('emptyState');
 
-        // DOM Elements
-        const gridEl = document.getElementById('district-grid');
-        const emptyStateEl = document.getElementById('empty-state');
-        const searchInput = document.getElementById('search-input');
-        const typeFilterSelect = document.getElementById('type-filter');
-        const divisionButtons = document.querySelectorAll('.division-btn');
-        const districtCounter = document.getElementById('district-counter');
-
-        // Render Cards with Official Pokémon Artwork
-        function renderDistricts() {
-            const filtered = officialDistricts.filter(d => {
-                const matchesDivision = currentDivision === 'all' || d.division.toLowerCase().includes(currentDivision.toLowerCase());
-                const matchesType = currentType === 'all' || d.types.includes(currentType);
-                const matchesSearch = d.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                                      d.pokemon.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                                      d.division.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                                      d.lore.toLowerCase().includes(searchQuery.toLowerCase());
-                return matchesDivision && matchesType && matchesSearch;
-            });
-
-            districtCounter.textContent = `${filtered.length} / 50`;
-
-            if (filtered.length === 0) {
-                gridEl.innerHTML = '';
-                emptyStateEl.classList.remove('hidden');
+        function renderDistricts(data) {
+            grid.innerHTML = '';
+            if (data.length === 0) {
+                emptyState.classList.remove('hidden');
+                resultCount.textContent = `Showing 0 Districts`;
                 return;
             }
+            emptyState.classList.add('hidden');
+            resultCount.textContent = `Showing ${data.length} Districts`;
 
-            emptyStateEl.classList.add('hidden');
+            data.forEach(item => {
+                const spriteUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${item.dexId}.png`;
+                const typeColor = typeColors[item.type] || 'bg-slate-500';
 
-            gridEl.innerHTML = filtered.map(d => {
-                const typeBadgesHtml = d.types.map(t => `<span class="px-2.5 py-0.5 rounded-full text-xs font-bold ${typeColors[t] || 'bg-slate-500 text-white'}">${t}</span>`).join(' ');
-                const artworkUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${d.pokeId}.png`;
-                const fallbackUrl = `https://placehold.co/150x150/f4ebd0/b84a26?text=${encodeURIComponent(d.pokemon)}`;
-                
-                return `
-                    <div class="glass-card rounded-2xl p-5 shadow-md hover:shadow-2xl transition-all duration-300 flex flex-col justify-between border border-amber-200/60 hover:border-rajasthan-terracotta group relative overflow-hidden">
-                        <div class="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-amber-200/30 to-transparent rounded-bl-full pointer-events-none"></div>
-                        
-                        <div>
-                            <div class="flex justify-between items-start mb-2">
-                                <span class="px-2.5 py-1 bg-amber-100 text-rajasthan-terracotta font-bold text-xs uppercase tracking-wider rounded-lg border border-amber-200">
-                                    ${d.division}
-                                </span>
-                                <span class="text-xs font-mono text-slate-400">#${String(d.id).padStart(3, '0')}</span>
-                            </div>
+                const card = document.createElement('div');
+                card.className = "district-card glass-card rounded-2xl p-5 shadow-sm hover:shadow-xl transition-all duration-300 border border-orange-100 flex flex-col justify-between cursor-pointer group";
+                card.onclick = () => openModal(item, spriteUrl, typeColor);
 
-                            <div class="w-28 h-28 mx-auto my-3 p-2 bg-gradient-to-b from-amber-50 to-white rounded-2xl border border-amber-200/80 shadow-inner flex items-center justify-center group-hover:scale-105 transition duration-300">
-                                <img src="${artworkUrl}" onerror="this.onerror=null; this.src='${fallbackUrl}';" alt="${d.pokemon}" class="w-full h-full object-contain filter drop-shadow-md">
-                            </div>
-
-                            <h3 class="font-display text-xl font-bold text-slate-900 group-hover:text-rajasthan-terracotta transition text-center mb-1">
-                                ${d.name}
-                            </h3>
-
-                            <div class="flex items-center justify-center gap-2 mb-3">
-                                <span class="text-xs font-semibold text-slate-500">Partner:</span>
-                                <span class="font-display font-bold text-rajasthan-indigo text-sm">${d.pokemon}</span>
-                            </div>
-
-                            <div class="flex flex-wrap justify-center gap-1.5 mb-4">
-                                ${typeBadgesHtml}
-                            </div>
-
-                            <p class="text-slate-600 text-xs leading-relaxed line-clamp-3 mb-4 text-center">
-                                ${d.lore}
-                            </p>
+                card.innerHTML = `
+                    <div>
+                        <div class="flex justify-between items-start mb-3">
+                            <span class="text-xs font-semibold text-orange-600 bg-orange-100 px-2.5 py-1 rounded-full">${item.division.replace(' Division', '')}</span>
+                            <span class="text-xs font-bold text-white ${typeColor} px-2.5 py-0.5 rounded-full shadow-xs">${item.type}</span>
                         </div>
-
-                        <button onclick="openModal(${d.id})" class="w-full py-2.5 bg-slate-900 hover:bg-rajasthan-terracotta text-white font-semibold text-xs rounded-xl shadow transition flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-eye"></i> View Atlas Entry
-                        </button>
+                        <h3 class="text-xl font-bold text-slate-800 group-hover:text-orange-600 transition">${item.name}</h3>
+                    </div>
+                    <div class="my-4 flex justify-center items-center h-32 bg-orange-50/50 rounded-xl group-hover:bg-orange-100/50 transition">
+                        <img src="${spriteUrl}" alt="${item.pokemon}" class="pokemon-img h-28 w-28 object-contain drop-md" loading="lazy" onerror="this.src='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${item.dexId}.png'">
+                    </div>
+                    <div>
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="font-bold text-slate-700">${item.pokemon}</span>
+                            <span class="text-xs text-slate-400">#${item.dexId}</span>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-1 line-clamp-2">${item.desc}</p>
                     </div>
                 `;
-            }).join('');
+                grid.appendChild(card);
+            });
         }
 
-        // Modal Functionality with Official Artwork
-        function openModal(id) {
-            const district = officialDistricts.find(d => d.id === id);
-            if (!district) return;
+        function filterData() {
+            const query = searchInput.value.toLowerCase();
+            const divVal = divisionFilter.value;
+            const typeVal = typeFilter.value;
 
-            document.getElementById('modal-district-name').textContent = district.name;
-            document.getElementById('modal-division-badge').textContent = district.division + " Division";
-            document.getElementById('modal-id-badge').textContent = `#${String(district.id).padStart(3, '0')}`;
-            document.getElementById('modal-pokemon-name').textContent = district.pokemon;
-            document.getElementById('modal-lore').textContent = district.lore;
-            document.getElementById('modal-highlights').textContent = district.highlights;
+            const filtered = districtsData.filter(item => {
+                const matchesSearch = item.name.toLowerCase().includes(query) || item.pokemon.toLowerCase().includes(query);
+                const matchesDiv = divVal === "" || item.division === divVal;
+                const matchesType = typeVal === "" || item.type === typeVal;
+                return matchesSearch && matchesDiv && matchesType;
+            });
 
-            const modalPokeImg = document.getElementById('modal-poke-img');
-            modalPokeImg.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${district.pokeId}.png`;
-            modalPokeImg.onerror = function() {
-                this.onerror = null;
-                this.src = `https://placehold.co/150x150/f4ebd0/b84a26?text=${encodeURIComponent(district.pokemon)}`;
-            };
+            renderDistricts(filtered);
+        }
 
-            // Type Badges
-            const typeBadgesContainer = document.getElementById('modal-type-badges');
-            typeBadgesContainer.innerHTML = district.types.map(t => `<span class="px-3 py-1 rounded-full text-xs font-bold shadow-sm ${typeColors[t] || 'bg-slate-500 text-white'}">${t}</span>`).join('');
+        searchInput.addEventListener('input', filterData);
+        divisionFilter.addEventListener('change', filterData);
+        typeFilter.addEventListener('change', filterData);
 
-            // Simulated Stats
-            const statsContainer = document.getElementById('modal-stats');
-            const mockStats = [
-                { label: 'Cultural Heritage', value: 85 + (district.id * 3) % 15 },
-                { label: 'Terrain Synergy', value: 75 + (district.id * 7) % 25 },
-                { label: 'Historical Power', value: 80 + (district.id * 5) % 20 },
-                { label: 'Tourism Appeal', value: 90 + (district.id * 2) % 10 }
-            ];
+        // Modal Logic
+        const modal = document.getElementById('detailModal');
+        const modalContentBox = document.getElementById('modalContentBox');
 
-            statsContainer.innerHTML = mockStats.map(stat => `
-                <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
-                    <div class="flex justify-between text-xs font-bold text-slate-700 mb-1">
-                        <span>${stat.label}</span>
-                        <span class="text-rajasthan-terracotta">${stat.value}%</span>
-                    </div>
-                    <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
-                        <div class="bg-gradient-to-r from-rajasthan-gold to-rajasthan-terracotta h-full rounded-full transition-all duration-500" style="width: ${stat.value}%"></div>
-                    </div>
-                </div>
-            `).join('');
+        function openModal(item, spriteUrl, typeColor) {
+            document.getElementById('modalImg').src = spriteUrl;
+            document.getElementById('modalDivision').textContent = item.division;
+            document.getElementById('modalDistrict').textContent = item.name;
+            document.getElementById('modalPokemon').textContent = `${item.pokemon} (#${item.dexId})`;
+            
+            const badge = document.getElementById('modalTypeBadge');
+            badge.textContent = item.type;
+            badge.className = `inline-block px-3 py-1 rounded-full text-xs font-bold text-white ${typeColor}`;
+            
+            document.getElementById('modalDesc').textContent = item.desc;
 
-            const modal = document.getElementById('district-modal');
-            const modalContent = document.getElementById('modal-content');
-            modal.classList.remove('opacity-0', 'pointer-events-none');
+            modal.classList.remove('hidden');
             setTimeout(() => {
-                modalContent.classList.remove('scale-95');
-                modalContent.classList.add('scale-100');
+                modalContentBox.classList.remove('scale-95', 'opacity-0');
+                modalContentBox.classList.add('scale-100', 'opacity-100');
             }, 10);
-            document.body.style.overflow = 'hidden';
         }
 
         function closeModal() {
-            const modal = document.getElementById('district-modal');
-            const modalContent = document.getElementById('modal-content');
-            modalContent.classList.remove('scale-100');
-            modalContent.classList.add('scale-95');
-            modal.classList.add('opacity-0', 'pointer-events-none');
-            document.body.style.overflow = 'auto';
+            modalContentBox.classList.remove('scale-100', 'opacity-100');
+            modalContentBox.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 200);
         }
 
-        // Event Listeners
-        searchInput.addEventListener('input', (e) => {
-            searchQuery = e.target.value;
-            renderDistricts();
-        });
-
-        typeFilterSelect.addEventListener('change', (e) => {
-            currentType = e.target.value;
-            renderDistricts();
-        });
-
-        divisionButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                divisionButtons.forEach(b => {
-                    b.classList.remove('bg-rajasthan-terracotta', 'text-white', 'shadow-rajasthan-terracotta/30');
-                    b.classList.add('bg-white', 'text-slate-700', 'hover:bg-amber-50', 'border', 'border-slate-200');
-                });
-                btn.classList.remove('bg-white', 'text-slate-700', 'hover:bg-amber-50', 'border', 'border-slate-200');
-                btn.classList.add('bg-rajasthan-terracotta', 'text-white', 'shadow-rajasthan-terracotta/30');
-
-                currentDivision = btn.getAttribute('data-division');
-                renderDistricts();
-            });
-        });
-
-        // Close modal on outside click
-        window.addEventListener('click', (e) => {
-            const modal = document.getElementById('district-modal');
-            if (e.target === modal) {
-                closeModal();
-            }
-        });
-
-        // Close modal on Escape key
-        window.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                closeModal();
-            }
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
         });
 
         // Initial render
-        renderDistricts();
+        renderDistricts(districtsData);
     </script>
 </body>
 </html>
